@@ -1,54 +1,63 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:convert';
-import '../lib/models/student.dart';
 
-Future<String> fetchStudentData(String studentId) async {
-  await Future.delayed(Duration(milliseconds: 300));
-  return jsonEncode({'id': studentId, 'firstName': 'Test', 'lastName': 'User', 'birthDate': DateTime(2000,1,1).toIso8601String()});
-}
-
-Future<List<Student>> loadStudentsFromFile(String filename) async {
-  final file = File(filename);
-  if (!await file.exists()) return [];
-  final contents = await file.readAsString();
-  final List<dynamic> arr = jsonDecode(contents);
-  return arr.map((e) => Student.fromJson(e as Map<String, dynamic>)).toList();
-}
-
-Future<void> saveStudentsToFile(List<Student> students, String filename) async {
-  final file = File(filename);
-  final s = jsonEncode(students.map((s) => s.toJson()).toList());
-  await file.writeAsString(s);
-}
-
-Stream<Student> studentStream() async* {
-  for (var i = 0; i < 3; i++) {
-    await Future.delayed(Duration(milliseconds: 200));
-    yield Student(id: 's\$i', firstName: 'Generated', lastName: '\$i', birthDate: DateTime(2000,1,1));
-  }
-}
-
-Future<void> demonstrateFutures() async {
-  final results = await Future.wait([fetchStudentData('s1'), fetchStudentData('s2')]);
-  print('fetched: \$results');
-}
-
-Future<void> demonstrateStreams() async {
-  await for (var s in studentStream()) {
-    print('streamed student: \${s.id}');
-  }
-}
-
-Future<void> demonstrateFileOperations() async {
-  final tmp = [Student(id: 'file1', firstName: 'F', lastName: 'L', birthDate: DateTime(2000))];
-  await saveStudentsToFile(tmp, 'students_sample.json');
-  final loaded = await loadStudentsFromFile('students_sample.json');
-  print('loaded from file: \${loaded.length}');
-}
-
-Future<void> main() async {
+void main() async {
   print('=== Dart Async Programming Demo ===');
   await demonstrateFutures();
   await demonstrateStreams();
   await demonstrateFileOperations();
+}
+
+// Future demo
+Future<void> demonstrateFutures() async {
+  print('\n--- Futures Demo ---');
+  Future<String> fetchData() async {
+    await Future.delayed(Duration(seconds: 1));
+    return "Student Data Loaded";
+  }
+
+  try {
+    var result = await fetchData().timeout(Duration(seconds: 2));
+    print(result);
+  } catch (e) {
+    print('Error: $e');
+  }
+}
+
+// Stream demo
+Future<void> demonstrateStreams() async {
+  print('\n--- Streams Demo ---');
+  Stream<int> numberStream() async* {
+    for (int i = 1; i <= 5; i++) {
+      await Future.delayed(Duration(milliseconds: 500));
+      yield i;
+    }
+  }
+
+  await for (var n in numberStream()) {
+    print('Stream value: $n');
+  }
+}
+
+// File operations demo
+Future<void> demonstrateFileOperations() async {
+  print('\n--- File Operations Demo ---');
+  String filename = "students.json";
+
+  // Sample data
+  List<Map<String, dynamic>> students = [
+    {"id": "S1", "name": "Alice", "gpa": 3.5},
+    {"id": "S2", "name": "Bob", "gpa": 4.0}
+  ];
+
+  // Save to file
+  var file = File(filename);
+  await file.writeAsString(jsonEncode(students));
+  print('Data saved to $filename');
+
+  // Read file
+  String content = await file.readAsString();
+  var decoded = jsonDecode(content);
+  print('Data loaded: $decoded');
 }

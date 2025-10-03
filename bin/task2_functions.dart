@@ -1,53 +1,70 @@
+void main() {
+  print('=== Dart Functions Demo ===');
+  testBasicFunctions();
+  testAdvancedFunctions();
+  testFunctionalProgramming();
+}
+
+void testBasicFunctions() {
+  print('\n--- Basic Functions ---');
+  print('Sum of 4 + 6 = ${calculateSum(4, 6)}');
+  print('Average of [2.0, 4.0, 6.0] = ${calculateAverage([2.0, 4.0, 6.0])}');
+}
+
+void testAdvancedFunctions() {
+  print('\n--- Advanced Functions ---');
+  print(formatName("Nikita", "Bondarenko"));
+  print(formatName("Ivan", "Petrov", middleName: "Olegovich", uppercase: true));
+
+  print('Fibonacci(7): ${fibonacci(7)}');
+  print('Factorial(5): ${factorial(5)}');
+}
+
+// 1. Звичайні функції
 int calculateSum(int a, int b) => a + b;
 
-
 double calculateAverage(List<double> numbers) {
-if (numbers.isEmpty) return 0.0;
-return numbers.reduce((v, e) => v + e) / numbers.length;
+  if (numbers.isEmpty) return 0;
+  return numbers.reduce((a, b) => a + b) / numbers.length;
 }
 
-
+// 2. Необов'язкові та іменовані параметри
 String formatName(String firstName, String lastName,
-{String? middleName, bool uppercase = false}) {
-var full = [firstName, if (middleName != null) middleName, lastName].join(' ');
-return uppercase ? full.toUpperCase() : full;
+    {String? middleName, bool uppercase = false}) {
+  String fullName =
+      middleName != null ? "$firstName $middleName $lastName" : "$firstName $lastName";
+  return uppercase ? fullName.toUpperCase() : fullName;
 }
 
-
+// 3. Анонімні функції та замикання
 void testFunctionalProgramming() {
-var numbers = [1, 2, 3, 4, 5];
-var squares = numbers.map((n) => n * n).toList();
-var evens = numbers.where((n) => n.isEven).toList();
-var sum = numbers.fold(0, (p, e) => p + e);
-print('squares: \$squares, evens: \$evens, sum: \$sum');
+  print('\n--- Functional Programming ---');
+  List<int> numbers = [1, 2, 3, 4, 5];
 
+  var squared = numbers.map((n) => n * n);
+  print('Squared: $squared');
 
-Function makeAdder(int x) {
-return (int y) => x + y;
+  var evens = numbers.where((n) => n.isEven);
+  print('Even numbers: $evens');
+
+  var sum = numbers.fold(0, (prev, n) => prev + n);
+  print('Sum using fold: $sum');
+
+  Function makeMultiplier(int factor) {
+    return (int x) => x * factor;
+  }
+
+  var doubleIt = makeMultiplier(2);
+  print('Double 5 = ${doubleIt(5)}');
 }
-var add5 = makeAdder(5);
-print('add5(3) = \${add5(3)}');
-}
 
-
+// 4. Функція рекурсії
 int fibonacci(int n) {
-if (n <= 0) return 0;
-if (n == 1) return 1;
-return fibonacci(n - 1) + fibonacci(n - 2);
+  if (n <= 1) return n;
+  return fibonacci(n - 1) + fibonacci(n - 2);
 }
-
 
 int factorial(int n) {
-if (n <= 1) return 1;
-return n * factorial(n - 1);
-}
-
-
-void main() {
-print('=== Dart Functions Demo ===');
-print('sum: \${calculateSum(3, 4)}');
-print('avg: \${calculateAverage([2.0, 4.0, 6.0])}');
-print('name: \${formatName('Nikita', 'Bondarenko', uppercase: true)}');
-testFunctionalProgramming();
-print('fib(8)=\${fibonacci(8)}, fact(5)=\${factorial(5)}');
+  if (n <= 1) return 1;
+  return n * factorial(n - 1);
 }

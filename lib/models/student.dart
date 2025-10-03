@@ -18,7 +18,7 @@ Map<String, double>? grades,
 grades = grades ?? {};
 
 
-String get fullName => '\$firstName \$lastName';
+String get fullName => '$firstName $lastName';
 
 
 int get age {

@@ -2,35 +2,57 @@ import '../lib/models/student.dart';
 import '../lib/models/course.dart';
 import '../lib/models/university.dart';
 
-void runUniversityDemo() {
-  final uni = University(name: 'Dart University');
+void main() {
+  print('=== University Management System Demo ===');
+  runUniversityDemo();
+}
 
-  final s1 = Student(id: 's1', firstName: 'Anna', lastName: 'Ivanova', birthDate: DateTime(2000, 5, 12));
-  final s2 = Student(id: 's2', firstName: 'Ivan', lastName: 'Petrov', birthDate: DateTime(1999, 3, 3));
+void runUniversityDemo() {
+  // 1. Створюємо університет
+  University uni = University(name: "Tech University");
+
+  // 2. Додаємо студентів
+  var s1 = Student(
+      id: "S1",
+      firstName: "Nikita",
+      lastName: "Bondarenko",
+      birthDate: DateTime(2006, 8, 4));
+  var s2 = Student(
+      id: "S2",
+      firstName: "Ivan",
+      lastName: "Petrov",
+      birthDate: DateTime(2003, 3, 22));
 
   uni.addStudent(s1);
   uni.addStudent(s2);
 
-  final c1 = Course(id: 'c1', name: 'Algorithms', description: 'Algo', credits: 4, instructor: 'Dr. A');
-  final c2 = Course(id: 'c2', name: 'Databases', description: 'DB', credits: 3, instructor: 'Dr. B');
+  // 3. Додаємо професора
+  var prof = Professor(
+      id: "P1",
+      firstName: "Olga",
+      lastName: "Ivanova",
+      birthDate: DateTime(1975, 8, 10),
+      department: "Computer Science",
+      salary: 1500);
+  uni.professors.add(prof);
 
-  uni.courses.addAll([c1, c2]);
+  // 4. Створюємо курси
+  var course = Course(
+      id: "C1",
+      name: "Programming",
+      description: "Intro to Dart",
+      credits: 5,
+      instructor: prof.fullName);
+  uni.courses.add(course);
 
-  s1.enrollInCourse('c1');
-  s2.enrollInCourse('c1');
-  s2.enrollInCourse('c2');
+  // 5. Записуємо студента на курс
+  s1.enrollInCourse("C1");
+  s1.addGrade("C1", 95);
 
-  s1.addGrade('c1', 95);
-  s2.addGrade('c1', 75);
-  s2.addGrade('c2', 85);
+  s2.enrollInCourse("C1");
+  s2.addGrade("C1", 70);
 
-  print('Students:');
-  for (var s in uni.students) print(s);
-
-  print('\nStatistics: \${uni.generateStatistics()}');
-}
-
-void main() {
-  print('=== University Management System Demo ===');
-  runUniversityDemo();
+  // 6. Виводимо статистику
+  print("\n--- University Statistics ---");
+  print(uni.generateStatistics());
 }
