@@ -1,0 +1,15 @@
+name: dart_basics_bondarenko
+description: Dart basics demo project (Bondarenko)
+version: 0.1.0
+environment:
+sdk: '>=3.0.0 <4.0.0'
+
+
+dependencies:
+collection: ^1.17.0
+json_annotation: ^4.8.0
+
+
+dev_dependencies:
+test: ^1.21.0
+build_runner: ^2.4.0
