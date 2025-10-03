@@ -18,6 +18,6 @@
 1. Встановіть Dart SDK: https://dart.dev/get-dart
 2. Клонуйте репозиторій (після завантаження на GitHub):
 ```bash
-git clone https://github.com/<your-username>/dart-basics-bondarenko.git
+git clone https://github.com/MikBon/Dart-basics-bondarenko.git
 cd dart-basics-bondarenko
 dart pub get
